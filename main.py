@@ -4,9 +4,17 @@
 import os
 import os.path
 import logging
+logfile =os.path.join( os.path.dirname(os.path.abspath(__file__)), 'logs/spider.log')
+logging.basicConfig(level = logging.INFO)
 
 import json
 import requests
+import url_manager
+import html_downloader
+import html_outputer
+import html_parser
+import html_parser
+
 '''
 cid=0,1
 begin=0,5,10,15,20,25,30
@@ -27,6 +35,22 @@ def start():
     with open('test.mp3', 'wb') as f:
         f.write(mp3.content)
 
+
+class SpiderMain(object):
+
+    def __init__(self):
+        self.urls = url_manager.UrlManager()
+        self.downloader = html_downloader.HtmlDownloader()
+        self.parser = html_parser.HtmlParser()
+        self.outputer = html_outputer.HtmlOutputer()
+    
+    def craw(self):
+        
+        while len(self.urls):
+            title, url = self.urls.pop()
+            
+
 if __name__ == '__main__':
-    start()
+    spider_main = SpiderMain()
+
 
