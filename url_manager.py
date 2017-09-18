@@ -25,7 +25,7 @@ class UrlManager():
         self.urls = set() # storage file title, link
 
         self.crawed_urls = self.get_crawed_urls()
-        self.articles = self.get_articles(count = 10)
+        self.articles = self.get_articles(cid = 1)
         self.craw_real_urls()
 
     def get_crawed_urls(self):
@@ -64,6 +64,11 @@ class UrlManager():
             article = self.articles.pop()
             article_content = self.downloader.download_article(article[1])
             article_id = self.parser.parse_id(article_content)
+            url = self.file_url.format(article_id)
+            if url in self.crawed_urls:
+                logging.info('file: {} has been downloaded, skip...'.format(article[0]))
+                time.sleep(3)
+                continue
             self.urls.add((article[0], self.file_url.format(article_id)))
             logging.info((article[0], article_id))
             time.sleep(3)
@@ -73,5 +78,5 @@ class UrlManager():
         write crawed url to file
         '''
         with self.lock:
-            with open(crawed_file, 'w') as f:
+            with open(crawed_file, 'a+') as f:
                 f.write('{}\n'.format(url))

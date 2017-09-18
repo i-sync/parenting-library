@@ -4,15 +4,14 @@
 import os
 import os.path
 import logging
-logfile =os.path.join( os.path.dirname(os.path.abspath(__file__)), 'logs/spider.log')
+logfile = os.path.join( os.path.dirname(os.path.abspath(__file__)), 'logs/spider.log')
 logging.basicConfig(level = logging.INFO)
 
-import json
+import time
 import requests
 import url_manager
 import html_downloader
 import html_outputer
-import html_parser
 import html_parser
 
 '''
@@ -25,6 +24,7 @@ https://mp.weixin.qq.com/mp/homepage?__biz=MzI5OTc5MTMxOA==&hid=2&sn=5ab2f67da2c
 voice_encode_fileid="MzI5OTc5MTMxOF8yMjQ3NDg3NTAx"
 '''
 
+'''
 def start():
     list_url = ''
     file_url = 'https://res.wx.qq.com/voice/getvoice?mediaid={}'
@@ -34,23 +34,29 @@ def start():
     mp3 = requests.get(file_url.format(id))
     with open('test.mp3', 'wb') as f:
         f.write(mp3.content)
-
+'''
 
 class SpiderMain(object):
 
     def __init__(self):
-        self.urls = url_manager.UrlManager()
+        self.urler = url_manager.UrlManager()
         self.downloader = html_downloader.HtmlDownloader()
         self.parser = html_parser.HtmlParser()
         self.outputer = html_outputer.HtmlOutputer()
     
     def craw(self):
         
-        while len(self.urls):
-            title, url = self.urls.pop()
+        while len(self.urler.urls):
+            title, url = self.urler.urls.pop()
+            logging.info('start downloading, title: {}, url: {}'.format(title, url))
+            file_content = self.downloader.download_file(url)
+            self.outputer.output_file(title, file_content)
+            #record crawed url
+            self.urler.write_url(url)
+            time.sleep(5)
             
 
 if __name__ == '__main__':
     spider_main = SpiderMain()
-
+    spider_main.craw()
 
