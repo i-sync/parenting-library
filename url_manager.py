@@ -20,12 +20,13 @@ class UrlManager():
         self.lock = threading.Lock()
         self.parser = html_parser.HtmlParser()
         self.downloader = html_downloader.HtmlDownloader()
-        self.base_url = 'https://mp.weixin.qq.com/mp/homepage?__biz=MzI5OTc5MTMxOA==&hid=2&sn=5ab2f67da2c0ca552463e88b1a53af4f&scene=18&cid={}&begin=0&count={}&action=appmsg_list&f=json&r={}'
+        self.base_url = 'https://mp.weixin.qq.com/mp/homepage?__biz=MzI5OTc5MTMxOA==&hid=1&sn=dca9743c2ff6c3ad9d633c6c6685b483&scene=18&cid={}&begin=0&count={}&action=appmsg_list&f=json&r={}'
+        #self.base_url = 'https://mp.weixin.qq.com/mp/homepage?__biz=MzI5OTc5MTMxOA==&hid=2&sn=5ab2f67da2c0ca552463e88b1a53af4f&scene=18&cid={}&begin=0&count={}&action=appmsg_list&f=json&r={}'
         self.file_url = 'https://res.wx.qq.com/voice/getvoice?mediaid={}'
         self.urls = set() # storage file title, link
 
         self.crawed_urls = self.get_crawed_urls()
-        self.articles = self.get_articles(cid = 1)
+        self.articles = self.get_articles(cid = 4)
         self.craw_real_urls()
 
     def get_crawed_urls(self):
